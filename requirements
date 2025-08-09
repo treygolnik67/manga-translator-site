@@ -1,0 +1,9 @@
+streamlit==1.22.0
+poppler-utils
+easyocr
+flet
+pymupdf
+pillow
+langdetect
+fpdf2
+ebooklib

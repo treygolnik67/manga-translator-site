@@ -1,8 +1,0 @@
-flet
-pillow
-pymupdf
-easyocr
-g4f
-langdetect
-ebooklib
-reportlab
