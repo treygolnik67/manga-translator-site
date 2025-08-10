@@ -1,4 +1,4 @@
-# app.py — Умный переводчик манги
+# app.py — Умный переводчик манги (без fpdf2)
 
 import flet as ft
 from PIL import Image
@@ -9,8 +9,10 @@ from pathlib import Path
 import easyocr
 from g4f.client import Client
 from langdetect import detect
-from fpdf2 import FPDF
 from ebooklib import epub
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import mm
 
 # Настройка
 TEMP_DIR = Path(tempfile.mkdtemp())
@@ -89,21 +91,28 @@ def process_page(image):
     else:
         return text, f"Язык: {lang}", "Неизвестный язык"
 
-# --- Сохранение в PDF ---
+# --- Сохранение в PDF (с reportlab) ---
 def save_translation_to_pdf(translations, output_path):
-    pdf = FPDF()
-    pdf.add_font("DejaVu", "", "DejaVuSans.ttf", uni=True)
-    pdf.set_auto_page_break(auto=True, margin=15)
+    c = canvas.Canvas(output_path, pagesize=A4)
+    width, height = A4
+    y = height - 50  # Начинаем сверху
+    line_height = 20
+
     for i, (jp, en, ru) in enumerate(translations):
-        pdf.add_page()
-        pdf.set_font("DejaVu", size=12)
-        pdf.cell(0, 10, f"Страница {i+1}", ln=True, align="C")
-        pdf.set_font("DejaVu", size=10)
-        pdf.cell(0, 8, f"🇯🇵 Японский: {jp}", ln=True)
-        pdf.cell(0, 8, f"🇬🇧 Английский: {en}", ln=True)
-        pdf.cell(0, 8, f"🇷🇺 Русский: {ru}", ln=True)
-        pdf.ln(5)
-    pdf.output(output_path)
+        if y < 100:
+            c.showPage()
+            y = height - 50
+
+        c.drawString(50, y, f"Страница {i+1}")
+        y -= line_height
+        c.drawString(50, y, f"🇯🇵 Японский: {jp}")
+        y -= line_height
+        c.drawString(50, y, f"🇬🇧 Английский: {en}")
+        y -= line_height
+        c.drawString(50, y, f"🇷🇺 Русский: {ru}")
+        y -= line_height + 10
+
+    c.save()
 
 # --- Сохранение в EPUB ---
 def save_translation_to_epub(translations, output_path):
