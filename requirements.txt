@@ -1,5 +1,4 @@
-streamlit==1.22.0
-poppler-utils
+streamlit==1.32.2
 easyocr
 flet
 pymupdf
@@ -7,3 +6,4 @@ pillow
 langdetect
 fpdf2
 ebooklib
+g4f
