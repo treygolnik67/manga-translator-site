@@ -281,4 +281,7 @@ def main(page: ft.Page):
     save_pdf_picker.on_result = on_save_pdf
     save_epub_picker.on_result = on_save_epub
 
-ft.app(target=main)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8501))
+    ft.app(target=main, port=port, host="0.0.0.0")
+
