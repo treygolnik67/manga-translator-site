@@ -13,7 +13,7 @@ from ebooklib import epub
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
-
+import os
 # Настройка
 TEMP_DIR = Path(tempfile.mkdtemp())
 reader = easyocr.Reader(['ja', 'en'])
@@ -284,4 +284,5 @@ def main(page: ft.Page):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8501))
     ft.app(target=main, port=port, host="0.0.0.0")
+
 
