@@ -1,9 +1,8 @@
-streamlit==1.32.2
-easyocr
 flet
-pymupdf
 pillow
-langdetect
-fpdf2
-ebooklib
+pymupdf
+easyocr
 g4f
+langdetect
+ebooklib
+reportlab
